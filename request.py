@@ -8,7 +8,8 @@ import requests
 import csv
 import datetime
 from concurrent.futures.thread import ThreadPoolExecutor
-from lxml import etree
+from lxml import html
+import os
 
 
 def get_pagenum():
@@ -19,6 +20,7 @@ def get_pagenum():
     url = 'http://fw.ybj.beijing.gov.cn/ddyy/ddyy2/list'
     re = requests.get(url=url)
     re.encoding = re.apparent_encoding
+    etree = html.etree
     dom = etree.HTML(re.text)
     total = int((dom.xpath('/html/body/div/div[2]/div[3]/p/b[1]/text()')[0]).split('/')[1])
     return total
@@ -35,6 +37,7 @@ def get_num(page):
         data = {'page': page}
         re = requests.post(url=url, data=data)
         re.encoding = re.apparent_encoding
+        etree = html.etree
         dom = etree.HTML(re.text)
         num = dom.xpath('//tbody/tr/td[1]/text()')
     else:
@@ -51,6 +54,7 @@ def get_detail(num):
     url = 'http://fw.ybj.beijing.gov.cn/ddyy/ddyy2/findByName?id=' + num
     re = requests.get(url)
     re.encoding = re.apparent_encoding
+    etree = html.etree
     dom = etree.HTML(re.text)
     name = dom.xpath('//table/tr[1]/td/text()')
     county = dom.xpath('//table/tr[3]/td/text()')
@@ -75,6 +79,7 @@ def main(page):
 
 if __name__ == '__main__':
 
+    file = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data', 'data.csv')
     start = datetime.datetime.now()
     details = []
     header = ('编码', '药店名', '所在区县', '地址')
@@ -88,7 +93,7 @@ if __name__ == '__main__':
     for de in temp:
         details.extend(de.result())
 
-    with open('/Users/finup/Desktop/work/dev/ybj/data/data2.csv', 'w') as f:
+    with open(file, 'w') as f:
         write = csv.writer(f)
         write.writerow(header)
         write.writerows(details)
