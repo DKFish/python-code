@@ -1,0 +1,22 @@
+#配置日志
+log:
+  file_name: autotest.log #日志文件名
+  console_level: DEBUG   #控制台日志级别
+  file_level: DEBUG      #日志文件级别
+  back_up: 6             #最多存档日志数
+  pattern: '%(asctime)s - %(module)s - %(levelname)s : %(message)s' #日志格式：2003-07-08 16:49:45,896/module - DEBUG:
+
+#配置devices
+devices:
+  version: 1.3.5
+  base: Android://127.0.0.1:5037/ #连接
+  child:
+    tencent: 172.16.91.238:9999 #小米手机：010201-0196（MIX2）
+#    tencent1: 172.16.89.210:9999 #oppo(reno): 010201-2365
+#      meizu4.4: 172.16.90.36:4444 #魅族(MX3):010201-0090(android 4.4.4)
+#      huawei: 172.16.89.175:3333 #华为（荣耀8）:010201-0103(android 7)
+#      meizu: 172.16.90.249:6666 #魅族手机（M575）：010201-0093
+#      tencent1: 172.16.90.105:8888 #oppo手机（R15）：010201-0527
+#      tencent2: 172.16.90.250:7777 #华为手机荣耀（荣耀9青春版）：010201-0197
+  packages:
+    bestriver: com.finupcredit.bestriver #百川包名
